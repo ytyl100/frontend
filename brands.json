@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "name": "\u4E30\u7530",
+    "logo": "https://logo.clearbit.com/audi.com",
+    "firstLetter": "A",
+    "isHot": true,
+    "createdDate": "2025-01-01T00:00:00Z",
+    "lastUpdated": "2026-02-20T15:56:05.1031288Z"
+  },
+  {
+    "id": "3",
+    "name": "\u65E5\u4EA7",
+    "logo": "https://logo.clearbit.com/mercedes-benz.com",
+    "firstLetter": "B",
+    "isHot": false,
+    "createdDate": "2025-01-01T00:00:00Z",
+    "lastUpdated": "2026-02-20T15:56:05.1031288Z"
+  },
+  {
+    "id": "4",
+    "name": "\u672C\u75302",
+    "logo": "https://logo.clearbit.com/honda.com",
+    "firstLetter": "H",
+    "isHot": false,
+    "createdDate": "2025-01-01T00:00:00Z",
+    "lastUpdated": "2026-02-20T15:56:05.1031288Z"
+  },
+  {
+    "id": "5",
+    "name": "\u6BD4\u4E9A\u8FEA",
+    "logo": "https://logo.clearbit.com/buick.com",
+    "firstLetter": "B",
+    "isHot": false,
+    "createdDate": "2025-01-01T00:00:00Z",
+    "lastUpdated": "2026-02-20T15:56:05.1031288Z"
+  },
+  {
+    "id": "6",
+    "name": "\u6BD4\u4E9A\u8FEA-\u5FEB\u9009",
+    "logo": "https://logo.clearbit.com/buick.com",
+    "firstLetter": "B",
+    "isHot": true,
+    "createdDate": "2025-01-01T00:00:00Z",
+    "lastUpdated": "2026-02-20T15:56:05.1031288Z"
+  },
+  {
+    "id": "7",
+    "name": "\u957F\u57CE",
+    "logo": "https://logo.clearbit.com/buick.com",
+    "firstLetter": "G",
+    "isHot": true,
+    "createdDate": "2025-01-01T00:00:00Z",
+    "lastUpdated": "2026-02-20T15:56:05.1031288Z"
+  },
+  {
+    "id": "8",
+    "name": "\u957F\u5B89",
+    "logo": "https://logo.clearbit.com/buick.com",
+    "firstLetter": "C",
+    "isHot": true,
+    "createdDate": "2025-01-01T00:00:00Z",
+    "lastUpdated": "2026-02-20T15:56:05.1031288Z"
+  },
+  {
+    "id": "1771602940261",
+    "name": "Tesla",
+    "logo": "https://logo.clearbit.com/google.com",
+    "firstLetter": "T",
+    "isHot": false,
+    "createdDate": "2026-02-20T15:56:05.0993548Z",
+    "lastUpdated": "2026-02-20T15:56:05.1031288Z"
+  }
+]
