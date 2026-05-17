@@ -1,0 +1,93 @@
+using Google.Apis.Admin.Directory.directory_v1;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
+using WPAnalyticsApp.Models;
+
+namespace WPAnalyticsApp.Services
+{
+    public class GoogleWorkspaceService
+    {
+        private readonly string _credentialsPath = "service-account-key.json"; // 你的GCP密钥文件路径
+        private readonly string _adminEmail = "admin@yourcompany.com"; // 【必须】指定一个有权限的Workspace管理员邮箱
+        private readonly string _customerDomain = "yourcompany.com"; // 你的企业域名
+
+        private DirectoryService GetDirectoryService()
+        {
+            // 1. 加载服务账号憑證
+            GoogleCredential credential;
+            using (var stream = new FileStream(_credentialsPath, FileMode.Open, FileAccess.Read))
+            {
+                credential = GoogleCredential.FromStream(stream)
+                                .CreateScoped(new[] { 
+                                    DirectoryService.Scope.AdminDirectoryGroupReadonly, 
+                                    DirectoryService.Scope.AdminDirectoryGroupMemberReadonly 
+                                })
+                                // 【核心】：利用 DWD 冒充管理员身份
+                                .CreateWithUser(_adminEmail);
+            }
+
+            // 2. 初始化服务
+            return new DirectoryService(new BaseClientService.Initializer
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = "HSBC-Group-Fetcher"
+            });
+        }
+
+        public async Task<List<GroupInfo>> GetGroupsAndMembersAsync()
+        {
+            var service = GetDirectoryService();
+            var groupInfoList = new List<GroupInfo>();
+
+            try
+            {
+                // 3. 获取所有用户组
+                var groupsRequest = service.Groups.List();
+                groupsRequest.Domain = _customerDomain;
+                var groupsResult = await groupsRequest.ExecuteAsync();
+
+                if (groupsResult.GroupsValue != null)
+                {
+                    foreach (var group in groupsResult.GroupsValue)
+                    {
+                        // 这里可以根据名称过滤，例如只抓取包含 "HSBC" 的组
+                        if (!group.Name.Contains("HSBC", StringComparison.OrdinalIgnoreCase))
+                            continue;
+
+                        var groupInfo = new GroupInfo
+                        {
+                            GroupId = group.Id,
+                            GroupName = group.Name,
+                            Email = group.Email
+                        };
+
+                        // 4. 根据当前组的 ID 循环抓取有效成员列表
+                        var membersRequest = service.Members.List(group.Id);
+                        var membersResult = await membersRequest.ExecuteAsync();
+
+                        if (membersResult.MembersValue != null)
+                        {
+                            foreach (var member in membersResult.MembersValue)
+                            {
+                                // 过滤：只获取状态为 ACTIVE（有效）的用户，忽略暂停或未激活的用户
+                                if (member.Status == "ACTIVE" && member.Type == "USER")
+                                {
+                                    groupInfo.ActiveMembers.Add(member.Email);
+                                }
+                            }
+                        }
+
+                        groupInfoList.Add(groupInfo);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // 生产环境请使用 ILogger 记录日志
+                Console.WriteLine($"抓取 Google 组织数据失败: {ex.Message}");
+            }
+
+            return groupInfoList;
+        }
+    }
+}
